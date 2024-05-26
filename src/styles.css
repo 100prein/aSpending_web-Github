@@ -1,0 +1,10 @@
+.xpenses {
+    border-radius: 10px;
+    border: 10 solid black;
+}
+
+.addButton {
+    background-color: white;
+    border-radius: 10px;
+    margin: 5px;
+}
