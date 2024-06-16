@@ -1,10 +1,90 @@
-.xpenses {
-    border-radius: 10px;
-    border: 10 solid black;
+/* src/styles.css */
+
+body {
+    background-color: black;
+    color: red;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-.addButton {
-    background-color: white;
-    border-radius: 10px;
-    margin: 5px;
+.nav_sect {
+    background-color: red;
+    padding: 10px;
+}
+
+.nav_sect ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav_sect li {
+    margin: 0;
+}
+
+.nav_sect a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav_sect a:hover {
+    color: white;
+}
+
+h2, h3 {
+    color: red;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label, input {
+    color: red;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="number"], input[type="text"] {
+    background-color: black;
+    border: 1px solid red;
+    color: red;
+    padding: 5px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: red;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: black;
+    color: red;
+    border: 1px solid red;
+}
+
+#expenseList, #incomeList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#expenseList li, #incomeList li {
+    background-color: black;
+    border: 1px solid red;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+#totalExpenses, #totalIncomes, #weeklyTotal {
+    color: red;
+    font-weight: bold;
 }
