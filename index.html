@@ -5,14 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/styles.css">
     <title>aSpending | Home</title>
+    <style>
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .calculator input, .calculator button {
+            padding: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .calculator input {
+            grid-column: span 4;
+        }
+    </style>
 </head>
 <body>
     <div class="nav_sect">
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="calcul.html">Calculator</a></li>
-            <li><a href="summary.html">Summary</a></li>
-            <li><a href="profile.html">Profile</a></li>
+            <li><a href="#calcul">Calculator</a></li>
+            <li><a href="#summary">Summary</a></li>
+            <!--<li><a href="profile.html">Profile</a></li>-->
         </ul>
     </div>
 
@@ -48,7 +65,55 @@
             <h3>Total: $<span id="weeklyTotal">0</span></h3>
         </div>
     </div>
+    <div id="calcul">
+        <h2>Calculator</h2>
+        <div class="calculator">
+            <input type="text" id="calcDisplay" disabled>
+            <button onclick="calcInput('7')">7</button>
+            <button onclick="calcInput('8')">8</button>
+            <button onclick="calcInput('9')">9</button>
+            <button onclick="calcInput('/')">/</button>
+            <button onclick="calcInput('4')">4</button>
+            <button onclick="calcInput('5')">5</button>
+            <button onclick="calcInput('6')">6</button>
+            <button onclick="calcInput('*')">*</button>
+            <button onclick="calcInput('1')">1</button>
+            <button onclick="calcInput('2')">2</button>
+            <button onclick="calcInput('3')">3</button>
+            <button onclick="calcInput('-')">-</button>
+            <button onclick="calcInput('0')">0</button>
+            <button onclick="calcInput('.')">.</button>
+            <button onclick="calcInput('+')">+</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="clearCalc()" style="grid-column: span 4;">C</button>
+        </div>
+    </div>
 
+    <div id="summary">
+        Daily
+        Weekly
+        Monthly
+        Yearly
+    </div>
+
+    <script>
+        function calcInput(value) {
+            document.getElementById('calcDisplay').value += value;
+        }
+
+        function calculate() {
+            const display = document.getElementById('calcDisplay');
+            try {
+                display.value = eval(display.value);
+            } catch {
+                display.value = 'Error';
+            }
+        }
+
+        function clearCalc() {
+            document.getElementById('calcDisplay').value = '';
+        }
+    </script>
     <script src="./src/script.js"></script>
 </body>
 </html>
