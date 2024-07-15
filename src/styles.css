@@ -1,6 +1,6 @@
 
 body {
-    background: url("./img/aSpendingBkg.png") repeat-y;
+    background: url("./img/aSpendingBkg.png") no-repeat fixed;
     background-size: cover;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -92,11 +92,13 @@ input[type="submit"]:hover {
     background-color: black;
     color: red;
     border: 1px solid red;
+    
 }
 
 #expenseList, #incomeList {
     list-style-type: none;
     padding: 0;
+    
 }
 
 #expenseList li, #incomeList li {
