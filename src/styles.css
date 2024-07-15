@@ -12,11 +12,14 @@ body {
 .budgetSection {
     background:  rgba(7, 0, 0, 0.7);
     color: white;
-    margin: auto;
+    margin: 5%;
+    padding: 5%;
 }
 
 #calcul {
     background:  rgba(7, 0, 0, 0.7);
+    margin: 5%;
+    padding: 5%;
 }
 .nav_sect {
     background-color: red;
