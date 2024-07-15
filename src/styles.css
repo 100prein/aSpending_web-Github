@@ -91,14 +91,13 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: black;
     color: red;
-    border: 1px solid red;
-    
+    border: 1px solid red;   
 }
 
 #expenseList, #incomeList {
     list-style-type: none;
     padding: 0;
-    
+    border-radius: 5%;
 }
 
 #expenseList li, #incomeList li {
@@ -106,6 +105,8 @@ input[type="submit"]:hover {
     border: 1px solid red;
     margin-bottom: 5px;
     padding: 10px;
+    border-radius: 10px;
+    width: 20%;
 }
 
 #totalExpenses, #totalIncomes, #weeklyTotal {
