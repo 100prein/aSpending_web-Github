@@ -1,11 +1,23 @@
+
 body {
-    background-color: black;
-    color: red;
+    background: url("./img/aSpendingBkg.png") repeat-y;
+    background-size: cover;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    height: 500px;
+    z-index: 2;
 }
 
+.budgetSection {
+    background:  rgba(7, 0, 0, 0.7);
+    color: white;
+    margin: auto;
+}
+
+#calcul {
+    background:  rgba(7, 0, 0, 0.7);
+}
 .nav_sect {
     background-color: red;
     padding: 10px;
@@ -33,23 +45,29 @@ body {
     color: white;
 }
 
+.output {
+    margin: 10px;
+}
+
 h2, h3 {
-    color: red;
+    color: white;
 }
 
 form {
     margin-bottom: 20px;
+    width: 10%;
 }
 
 label, input {
-    color: red;
+    color: white;
     display: block;
     margin-bottom: 10px;
 }
 
 input[type="number"], input[type="text"] {
-    background-color: black;
+    /*background-color: black;*/
     border: 1px solid red;
+    border-radius: 10px;
     color: red;
     padding: 5px;
     width: 100%;
@@ -62,6 +80,7 @@ input[type="submit"] {
     cursor: pointer;
     font-weight: bold;
     padding: 10px 20px;
+    border-radius: 10px;
 }
 
 input[type="submit"]:hover {
@@ -86,3 +105,4 @@ input[type="submit"]:hover {
     color: red;
     font-weight: bold;
 }
+
