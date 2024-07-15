@@ -43,7 +43,7 @@
 
     <div class="budgetSection">
         <div class="output">
-            <h2>Your Expenses</h2>
+            <h1>Your Expenses</h1>
             <form id="expenseForm">
                 <label for="expenseAmount">Amount</label><br>
                 <input type="number" id="expenseAmount" class="xpenses" name="expenseAmount"><br>
@@ -57,7 +57,7 @@
         </div>
 
         <div class="output">
-            <h2>Your Income</h2>
+            <h1>Your Income</h1>
             <form id="incomeForm">
                 <label for="incomeAmount">Amount</label><br>
                 <input type="number" id="incomeAmount" class="xpenses" name="incomeAmount"><br>
@@ -70,7 +70,7 @@
         </div>
         
         <div class="output">
-            <h2>Your Weekly Total</h2>
+            <h1>Your Weekly Total</h1>
             <h3>Total: $<span id="weeklyTotal">0</span></h3>
         </div>
     </div>
@@ -101,10 +101,11 @@
     </div>
 
     <!--Same functions as a note pad-->
-    <div class="output" id="summary">
+    <div class="summarySection" id="summary">
+        <h1>Summary</h1>
         <form id="summary">
             <label for="monthName">Month</label><br>
-            <input type="monthName" id="monthName" class="monthName" name="monthName"><br>
+            <input type="number" id="monthName" class="monthName" name="monthName"><br>
             <label for="expenseAmount">Amount</label><br>
             <input type="number" id="totalAmountMonth" class="totalAmountMonth" name="totalAmountMonth"><br>
         </form>

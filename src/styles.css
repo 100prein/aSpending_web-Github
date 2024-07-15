@@ -16,6 +16,13 @@ body {
     padding: 5%;
 }
 
+.summarySection {
+    background:  rgba(7, 0, 0, 0.7);
+    color: white;
+    margin: 5%;
+    padding: 5%;
+}
+
 
 footer {
     background:  rgba(7, 0, 0, 0.7);
@@ -23,6 +30,7 @@ footer {
     padding: 5%;
     color: white;
 }
+
 .nav_sect {
     background-color: red;
     padding: 10px;
@@ -112,5 +120,9 @@ input[type="submit"]:hover {
 #totalExpenses, #totalIncomes, #weeklyTotal {
     color: red;
     font-weight: bold;
+}
+
+h1 {
+    padding: 3%;
 }
 
