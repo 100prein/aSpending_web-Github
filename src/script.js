@@ -3,12 +3,38 @@ document.addEventListener('DOMContentLoaded', () => {
     let incomes = [];
 
     const expenseForm = document.getElementById('expenseForm');
+    const expenseForm2 = document.getElementById('expenseForm2');
+    const expenseForm3 = document.getElementById('expenseForm3');
+
     const incomeForm = document.getElementById('incomeForm');
     const expenseList = document.getElementById('expenseList');
     const incomeList = document.getElementById('incomeList');
     const totalExpensesElem = document.getElementById('totalExpenses');
     const totalIncomesElem = document.getElementById('totalIncomes');
     const weeklyTotalElem = document.getElementById('weeklyTotal');
+
+    expenseForm3.addEventListener('submit', event => {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('expenseAmount3').value);
+        const name = document.getElementById('expenseName3').value;
+        if (amount && name) {
+            expenses.push({ amount, name });
+            updateExpenses();
+            expenseForm.reset();
+        }
+    });
+
+
+    expenseForm2.addEventListener('submit', event => {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('expenseAmount2').value);
+        const name = document.getElementById('expenseName2').value;
+        if (amount && name) {
+            expenses.push({ amount, name });
+            updateExpenses();
+            expenseForm.reset();
+        }
+    });
 
     expenseForm.addEventListener('submit', event => {
         event.preventDefault();
