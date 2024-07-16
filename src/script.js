@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const expenseForm3 = document.getElementById('expenseForm3');
 
     const incomeForm = document.getElementById('incomeForm');
+    const incomeForm2 = document.getElementById('incomeForm2');
+    const incomeForm3 = document.getElementById('incomeForm3');
+
+
     const expenseList = document.getElementById('expenseList');
     const incomeList = document.getElementById('incomeList');
     const totalExpensesElem = document.getElementById('totalExpenses');
@@ -51,6 +55,27 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const amount = parseFloat(document.getElementById('incomeAmount').value);
         const name = document.getElementById('incomeName').value;
+        if (amount && name) {
+            incomes.push({ amount, name });
+            updateIncomes();
+            incomeForm.reset();
+        }
+    });
+
+    incomeForm2.addEventListener('submit', event => {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('incomeAmount2').value);
+        const name = document.getElementById('incomeName2').value;
+        if (amount && name) {
+            incomes.push({ amount, name });
+            updateIncomes();
+            incomeForm.reset();
+        }
+    });
+    incomeForm3.addEventListener('submit', event => {
+        event.preventDefault();
+        const amount = parseFloat(document.getElementById('incomeAmount3').value);
+        const name = document.getElementById('incomeName3').value;
         if (amount && name) {
             incomes.push({ amount, name });
             updateIncomes();

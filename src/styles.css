@@ -52,6 +52,10 @@ footer {
     display: flex;
 }
 
+.income_section {
+    display: flex;
+}
+
 .nav_sect a {
     color: black;
     text-decoration: none;
@@ -125,7 +129,6 @@ input[type="submit"]:hover {
 
 .expensesListContainer {
     overflow: scroll;
-    width: 50%;
     height: 300px;
 }
 
