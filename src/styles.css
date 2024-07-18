@@ -32,7 +32,7 @@ footer {
 }
 
 .nav_sect {
-    background-color: #B74C3F;
+    background-color: #A5A5A5;
     padding: 10px;
 }
 
@@ -128,7 +128,7 @@ input[type="submit"]:hover {
 }
 
 .expensesListContainer {
-    overflow: scroll;
+    overflow: auto;
     height: 300px;
 }
 
