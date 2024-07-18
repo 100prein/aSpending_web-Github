@@ -9,7 +9,7 @@ function addNote(text = "") {
     note.classList.add("note-wrapper");
     note.innerHTML = `<div class="operations">
                 <button class="edit"><i class="fa-solid fa-pen-to-square" style="color: #63E6BE;"></i></button>
-                <button class="delete"><i class="fa-solid fa-trash" style="color: #63E6BE;"></i><i class="fa-solid fa-trash" style="color: #63E6BE;"></i></button>
+                <button class="delete"><i class="fa-solid fa-trash" style="color: #63E6BE;"></i></button>
             </div>
             <div class="main ${text ? "" : "hidden"}"></div>
             <textarea class="${text ? "hidden" : ""}"></textarea>`;
@@ -38,7 +38,7 @@ function addNote(text = "") {
             document.body.appendChild(note);
 
             function updates(){
-                const noteText = dcument.querySelectorAll('textArea');
+                const noteText = document.querySelectorAll('textArea');
                 const notes = [];
 
                 noteText.forEach((note) => notes.push(note.value));
