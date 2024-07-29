@@ -2,10 +2,11 @@
 
 const btnAdd = document.querySelector(".btn_add");
 
+
 btnAdd.addEventListener("click", () => addNote());
 
 function addNote(text = "") {
-    const note = document.createElement("div");
+    const note = document.createElement("myNotes");
     note.classList.add("note-wrapper");
     note.innerHTML = `<div class="operations">
                 <button class="edit"><i class="fa-solid fa-pen-to-square" style="color: #63E6BE;"></i></button>
