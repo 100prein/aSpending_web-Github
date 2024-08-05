@@ -35,10 +35,10 @@
 </head>
 <body>
     <div class="nav_sect">
-        <ul>
+        <ul id="#menu">
             <li><a href="index.html">Home</a></li>
             <li><a href="#calcul">Calculator</a></li>
-            <li><a href="#summary">Summary</a></li>
+            <li><a href="#note">Note</a></li>
             <!--<li><a href="profile.html">Profile</a></li>-->
         </ul>
     </div>
@@ -152,15 +152,8 @@
             <button onclick="clearCalc()" style="grid-column: span 4;">C</button>
         </div>
     </div>
-
-
-
-
-
-
-
     <!--Same functions as a note pad-->
-    <div class="summarySection" id="summary">
+    <div class="summarySection" id="note">
         <h1>Note</h1>
         <button class="btn_add"> <i class="fas fa-pencil"></i>Add Note</button>
         <div id="myNotes"></div>
@@ -173,14 +166,6 @@
             <textarea name="" id=""></textarea>
         </div>-->
     </div>
-
-
-
-
-
-
-
-
     <script>
         function calcInput(value) {
             document.getElementById('calcDisplay').value += value;
@@ -203,6 +188,9 @@
     <script src="./src/scriptBtn.js"></script>
 </body>
 <footer>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non assumenda voluptates provident doloribus deserunt labore, repellat eaque aperiam quis molestias minima! Molestiae nisi velit molestias eveniet fugit atque tenetur illo.</p>
+    <ul>
+        <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
+        <p>© All rights reserved 2024 </p>
+    </ul>
 </footer>
 </html>
