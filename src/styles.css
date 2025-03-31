@@ -1,38 +1,13 @@
-
 body {
-    background: url("./img/aSpendingBkg.png") no-repeat fixed;
-    background-size: cover;
+    background-color: black;
+    color: red;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 500px;
-    z-index: 2;
-}
-
-.budgetSection {
-    background:  rgba(7, 0, 0, 0.7);
-    color: white;
-    margin: 5%;
-    padding: 5%;
-}
-
-.summarySection {
-    background:  rgba(7, 0, 0, 0.7);
-    color: white;
-    margin: 5%;
-    padding: 5%;
-}
-
-
-footer {
-    background:  rgba(7, 0, 0, 0.7);
-    margin: 5%;
-    padding: 5%;
-    color: white;
 }
 
 .nav_sect {
-    background-color: #A5A5A5;
+    background-color: red;
     padding: 10px;
 }
 
@@ -48,14 +23,6 @@ footer {
     margin: 0;
 }
 
-.expenses_section {
-    display: flex;
-}
-
-.income_section {
-    display: flex;
-}
-
 .nav_sect a {
     color: black;
     text-decoration: none;
@@ -66,138 +33,56 @@ footer {
     color: white;
 }
 
-.output {
-    margin: 10px;
-    height: auto;
-}
-
 h2, h3 {
-    color: white;
+    color: red;
 }
 
 form {
     margin-bottom: 20px;
-    width: 50%;
 }
 
 label, input {
-    color: white;
+    color: red;
     display: block;
     margin-bottom: 10px;
 }
 
 input[type="number"], input[type="text"] {
-    /*background-color: black;*/
-    border: 1px solid #BFBFBF;
-    border-radius: 10px;
-    color: black;
+    background-color: black;
+    border: 1px solid red;
+    color: red;
     padding: 5px;
-    width: 87%;
+    width: 100%;
 }
 
 input[type="submit"] {
-    background-color: #BFBFBF;
+    background-color: red;
     border: none;
     color: black;
     cursor: pointer;
     font-weight: bold;
     padding: 10px 20px;
-    border-radius: 10px;
 }
 
 input[type="submit"]:hover {
     background-color: black;
-    color: #BFBFBF;
-    border: 1px solid r#BFBFBF;   
+    color: red;
+    border: 1px solid red;
 }
 
 #expenseList, #incomeList {
     list-style-type: none;
     padding: 0;
-    border-radius: 5%;
 }
 
 #expenseList li, #incomeList li {
     background-color: black;
-    border: 1px solid #BFBFBF;
+    border: 1px solid red;
     margin-bottom: 5px;
     padding: 10px;
-    border-radius: 10px;
-    width: 70%;
-    
-}
-
-.expensesListContainer {
-    overflow: auto;
-    height: 300px;
 }
 
 #totalExpenses, #totalIncomes, #weeklyTotal {
-    color: #BFBFBF;
+    color: red;
     font-weight: bold;
 }
-
-h1 {
-    padding: 3%;
-}
-
-
-
-.btn_add {
-    outline: none;
-    border: none;
-    background: #8e44ad;
-    color: #fff;
-    padding: 0.6rem 2rem;
-    margin-bottom: 8rem 0;
-    font-family: inherit;
-    border-radius: 30px;
-    font-size: 1 rem;
-    cursor: pointer;
-    
-}
-
-.note-wrapper {
-    background: #fff;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.1);
-    width: 10%;
-    height: 5%;
-    font-size: 1.2;
-    margin: 30px;
-}
-
-.note-wrapper .operations {
-    background: #5b2c6f;
-    padding: 10%;
-}
-
-.note-wrapper .operations button{
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 11px;
-}
-
-.note-wrapper textarea{
-    outline: none;
-    font-family: inherit;
-    font-size: 20px;
-    padding: 20px;
-    resize: none;
-    border: none;
-}
-.main {
-    padding: 20px;
-    background: #fff;
-}
-
-.hidden {
-    display: none;
-} 
-
-a {
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-}
-
