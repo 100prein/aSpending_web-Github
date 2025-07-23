@@ -57,9 +57,9 @@
 
     <h2>Summary</h2>
 <div id="summaryBox">
-  <p>Total Incomes: $<span id="totalIncomes">0</span></p>
-  <p>Total Expenses: $<span id="totalExpenses">0</span></p>
-  <p>Net Balance: $<span id="netBalance">0</span></p>
+  <span id="totalIncomes"></span>
+  <span id="totalExpenses"></span>
+  <span id="netBalance"></span>
 </div>
 
 
@@ -100,11 +100,6 @@
     <button class="clear-btn" onclick="clearCalc()">C</button>
   </div>
 </div>
-
-
-
-   
-  
 
 <footer>
   <p>Made by <a href="https://www.instagram.com/captcold_man/">Sekou Traore</a></p>
@@ -147,94 +142,73 @@
     const d = new Date(dateString);
     return d.toLocaleString(); // readable date & time
   }
+function renderUI() {
+    // ✅ Expenses
+    expenseList.innerHTML = '';
+    expenses.forEach((e, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${e.name}: $${e.amount} 
+        <small>(${new Date(e.date).toLocaleString()})</small>
+        <button onclick="deleteExpense(${index})">❌</button>`;
+      expenseList.appendChild(li);
+    });
 
-  function renderUI() {
-  // Expenses
-  expenseList.innerHTML = '';
-  expenses.forEach(e => {
-    const li = document.createElement('li');
-    li.textContent = `${e.name}: $${e.amount.toFixed(2)} (${new Date(e.date).toLocaleString()})`;
-    expenseList.appendChild(li);
-  });
+    // ✅ Incomes
+    incomeList.innerHTML = '';
+    incomes.forEach((i, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${i.name}: $${i.amount} 
+        <small>(${new Date(i.date).toLocaleString()})</small>
+        <button onclick="deleteIncome(${index})">❌</button>`;
+      incomeList.appendChild(li);
+    });
 
-  // Incomes
-  incomeList.innerHTML = '';
-  incomes.forEach(i => {
-    const li = document.createElement('li');
-    li.textContent = `${i.name}: $${i.amount.toFixed(2)} (${new Date(i.date).toLocaleString()})`;
-    incomeList.appendChild(li);
-  });
+    // ✅ Notes
+    notesList.innerHTML = '';
+    notes.forEach((n, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${n.text} 
+        <small>(${new Date(n.date).toLocaleString()})</small>
+        <button onclick="deleteNote(${index})">❌</button>`;
+      notesList.appendChild(li);
+    });
 
-  // Notes
-  notesList.innerHTML = '';
-  notes.forEach(n => {
-    const li = document.createElement('li');
-    li.textContent = `${n.text} (${new Date(n.date).toLocaleString()})`;
-    notesList.appendChild(li);
-  });
+    // ✅ Update net balance
+    const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const totalIncomes = incomes.reduce((sum, i) => sum + i.amount, 0);
+    const netBalance = totalIncomes - totalExpenses;
 
-  // ✅ CALCULATE TOTALS
-  const totalExpenses = expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
-  const totalIncomes = incomes.reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
-  const netBalance = totalIncomes - totalExpenses;
-
-  // ✅ UPDATE SUMMARY UI
-  document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
-  document.getElementById('totalIncomes').textContent = totalIncomes.toFixed(2);
-  document.getElementById('netBalance').textContent = netBalance.toFixed(2);
-
-  // ✅ Optional: Highlight negative balance in red
-  const netEl = document.getElementById('netBalance');
-  netEl.style.color = netBalance < 0 ? 'red' : 'green';
-}
-  async function syncToSupabase() {
-    if (!currentUser) return;
-    await sb.from("user_data").upsert({
-      user_id: currentUser.id,
-      expenses, incomes, notes,
-      updated_at: new Date()
-    }, { onConflict: "user_id" });
-  }
-
-  async function fetchAndMergeSupabase() {
-    if (!currentUser) return;
-    const { data } = await sb.from("user_data").select("*").eq("user_id", currentUser.id).maybeSingle();
-
-    if (data) {
-      const mergeUnique = (localArr, cloudArr, keyFn) => {
-        const combined = [...localArr, ...cloudArr];
-        const seen = new Set();
-        return combined.filter(item => {
-          const key = keyFn(item);
-          if (seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-      };
-      expenses = mergeUnique(expenses, data.expenses || [], e => `${e.name}-${e.amount}-${e.date}`);
-      incomes = mergeUnique(incomes, data.incomes || [], i => `${i.name}-${i.amount}-${i.date}`);
-      notes = mergeUnique(notes, data.notes || [], n => `${n.text}-${n.date}`);
-      saveLocal();
-      renderUI();
-      await syncToSupabase();
-    } else {
-      await syncToSupabase();
+    const balanceDiv = document.getElementById("netBalance");
+    if (balanceDiv) {
+      balanceDiv.innerHTML = `
+        <p><strong>Total Incomes:</strong> ${totalIncomes.toFixed(2)}</p>
+        <p><strong>Total Expenses:</strong> ${totalExpenses.toFixed(2)}</p>
+        <p><strong>Net Balance:</strong> ${netBalance.toFixed(2)}</p>
+      `;
     }
   }
 
-  // ✅ Delete individual items
-  window.deleteExpense = (index) => {
+  // ✅ Individual delete functions
+  function deleteExpense(index) {
     expenses.splice(index, 1);
-    saveLocal(); renderUI(); syncToSupabase();
-  };
-  window.deleteIncome = (index) => {
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+  }
+
+  function deleteIncome(index) {
     incomes.splice(index, 1);
-    saveLocal(); renderUI(); syncToSupabase();
-  };
-  window.deleteNote = (index) => {
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+  }
+
+  function deleteNote(index) {
     notes.splice(index, 1);
-    saveLocal(); renderUI(); syncToSupabase();
-  };
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+  }
 
   // ✅ Clear All
   document.getElementById('clearExpensesBtn').addEventListener('click', () => {
