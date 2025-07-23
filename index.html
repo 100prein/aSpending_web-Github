@@ -1,206 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="aSpending" />
-    <link rel="manifest" href="/site.webmanifest" />
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./src/styles.css">
-    <script src="https://kit.fontawesome.com/fcd93b617c.js" crossorigin="anonymous"></script>
-    <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-  const supabaseUrl = 'https://avlrhwghetnmgvsbjlxt.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw';
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const authStatus = document.getElementById('authStatus');
-
-  async function login() {
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email: emailInput.value,
-      password: passwordInput.value
-    });
-
-    if (error) {
-      authStatus.textContent = 'Login failed: ' + error.message;
-    } else {
-      authStatus.textContent = 'Logged in!';
-      logoutBtn.style.display = 'block';
-    }
-  }
-
-  async function signup() {
-    const { error, data } = await supabase.auth.signUp({
-      email: emailInput.value,
-      password: passwordInput.value
-    });
-
-    if (error) {
-      authStatus.textContent = 'Signup failed: ' + error.message;
-    } else {
-      authStatus.textContent = 'Signup successful! Check your email.';
-    }
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    authStatus.textContent = 'Logged out.';
-    logoutBtn.style.display = 'none';
-  }
-
-  loginBtn.addEventListener('click', login);
-  signupBtn.addEventListener('click', signup);
-  logoutBtn.addEventListener('click', logout);
-</script>
-
-
-    <title>aSpending | Home</title>
-    <style>
-        .calculator {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 400px;
-            margin: auto;
-        }
-        .calculator input, .calculator button {
-            padding: 20px;
-            font-size: 1.5em;
-            text-align: center;
-        }
-        .calculator input {
-            grid-column: span 4;
-            text-align: center;
-        }
-        
-        #calcul {
-            background:  rgba(7, 0, 0, 0.7);
-            margin: 5%;
-            padding: 5%;
-        }
-
-    </style>
+  <title>Budget Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./src/styles.css">
+  <style>
+    .hidden { display: none; }
+    ul { list-style: none; padding: 0; }
+    
+    footer { text-align: center; margin-top: 20px; }
+  </style>
 </head>
 <body>
-    <div class="nav_sect">
-        <ul id="#menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#calcul">Calculator</a></li>
-            <li><a href="#note">Note</a></li>
-            <!--<li><a href="profile.html">Profile</a></li>-->
-            <li><a href="login.html">Login</a></li>
-            <li><a href="signup.html">Signup</a></li>
 
+<div class="container">
 
-        </ul>
-    </div>
-    <div id="authSection">
-        <h3>Login to sync</h3>
-        <input type="email" class="inputText" id="email" placeholder="Enter your email" />
-        <input type="password" class="inputText" id="password" placeholder="Enter your password" />
-        <button id="loginBtn">Login</button>
-        <button id="signupBtn">Signup</button>
-        <button id="logoutBtn" style="display:none;">Logout</button>
-        <p id="authStatus"></p>
+  <!-- AUTH SECTION -->
+  <div id="authSection">
+    <h2>Welcome! Please Log In or Sign Up</h2>
+    <input id="authEmail" class="inputText" type="email" placeholder="Email">
+    <input id="authPassword" class="inputText" type="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <button id="signupBtn">Sign Up</button>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+   <div class="budgetSection">
+      <div id="dashboardSection" class="hidden">
+    <div>
+      <p id="status">Checking session...</p>
+      <button class="submit" id="logoutBtn">Logout</button>
     </div>
 
-    <div class="budgetSection">
-        <h1>Your Expenses</h1>
-        <div class="expenses_section">
-            
-            <div class="output">
-                <form id="expenseForm">
-                    <label for="expenseAmount">Amount</label><br>
-                    <input type="number" id="expenseAmount" class="xpenses" name="expenseAmount"><br>
-                    <label for="expenseName">Name</label><br>
-                    <input type="text" id="expenseName" class="xpenses" name="expenseName"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-                
-                    <div class="expensesListContainer">
-                        <ul id="expenseList"></ul>
-                    </div>
-                    <h3>Expenses: $<span id="totalExpenses">0</span></h3>
-            </div>
-    
-            <div class="output">
-                <form id="expenseForm2">
-                    <label for="expenseAmount2">Amount</label><br>
-                    <input type="number" id="expenseAmount2" class="xpenses" name="expenseAmount"><br>
-                    <label for="expenseName2">Name</label><br>
-                    <input type="text" id="expenseName2" class="xpenses" name="expenseName2"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-            </div>
+    <h2>Expenses</h2>
+    <ul id="expenseList"></ul>
+    <input id="expenseName" class="inputText" placeholder="Expense Name">
+    <input id="expenseAmount" class="inputText" placeholder="Amount" type="number">
+    <button class="submit" id="addExpenseBtn">Add Expense</button>
 
-            <div class="output">
-                <form id="expenseForm3">
-                    <label for="expenseAmount3">Amount</label><br>
-                    <input type="number" id="expenseAmount3" class="xpenses" name="expenseAmount"><br>
-                    <label for="expenseName3">Name</label><br>
-                    <input type="text" id="expenseName3" class="xpenses" name="expenseName3"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-            </div>
-        </div>
-        <h1>Your Income</h1>
-        <div class="income_section">   
-            <div class="output">
-                <form id="incomeForm">
-                    <label for="incomeAmount">Amount</label><br>
-                    <input type="number" id="incomeAmount" class="xpenses" name="incomeAmount"><br>
-                    <label for="incomeName">Name</label><br>
-                    <input type="text" id="incomeName" class="xpenses" name="incomeName"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-                <div class="expensesListContainer">
-                    <ul id="incomeList"></ul>
-                </div>
-                <h3>Income: $<span id="totalIncomes">0</span></h3>
-            </div>
-            <div class="output">
-                <form id="incomeForm2">
-                    <label for="incomeAmount2">Amount</label><br>
-                    <input type="number" id="incomeAmount2" class="xpenses" name="incomeAmount"><br>
-                    <label for="incomeName2">Name</label><br>
-                    <input type="text" id="incomeName2" class="xpenses" name="incomeName2"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-                <ul id="incomeList"></ul>
-            </div>
-            
-            <div class="output">
-                <form id="incomeForm3">
-                    <label for="incomeAmount3">Amount</label><br>
-                    <input type="number" id="incomeAmount3" class="xpenses" name="incomeAmount"><br>
-                    <label for="incomeName3">Name</label><br>
-                    <input type="text" id="incomeName3" class="xpenses" name="incomeName3"><br>
-                    <input type="submit" class="addButton" value="Add">
-                </form>
-                <ul id="incomeList"></ul>
-            </div>
-            
-            
-        </div>
-        
-        <div class="output">
-            <h1>Your Weekly Total</h1>
-            <h3>Total: $<span id="weeklyTotal">0</span></h3>
-        </div>
-    </div>
+    <h2>Incomes</h2>
+    <ul id="incomeList"></ul>
+    <input id="incomeName" class="inputText" placeholder="Income Name">
+    <input id="incomeAmount" class="inputText" placeholder="Amount" type="number">
+    <button class="submit" id="addIncomeBtn">Add Income</button>
 
-    <!--Calculator-->
+    <h2>Notes</h2>
+    <ul id="notesList"></ul>
+    <textarea id="noteText" class="inputText" placeholder="Write a note"></textarea>
+    <button class="submit" id="addNoteBtn">Add Note</button>
+  </div>
+ <!--Calculator-->
 
     <div id="calcul" class="output">
         <div class="calculator">
@@ -224,45 +73,229 @@
             <button onclick="clearCalc()" style="grid-column: span 4;">C</button>
         </div>
     </div>
-    <!--Same functions as a note pad-->
-    <div class="summarySection" id="note">
-        <h1>Note</h1>
-        <button class="btn_add"> <i class="fas fa-pencil"></i>Add Note</button>
-        <div id="myNotes"></div>
-        <div class="note-wrapper">
-            <div class="operations">
-                <button class="edit"><i class="fas fa-edit"></i></button>
-                <button class="delete"><i class="fas fa-trash-alt"></i></button>
-            </div>
-            <div class=" main hidden"></div>
-            <textarea name="" id=""></textarea>
-        </div>
-    </div>
-    <script>
-        function calcInput(value) {
-            document.getElementById('calcDisplay').value += value;
-        }
+</div>
 
-        function calculate() {
-            const display = document.getElementById('calcDisplay');
-            try {
-                display.value = eval(display.value);
-            } catch {
-                display.value = 'Error';
-            }
-        }
+   </div>
+  
 
-        function clearCalc() {
-            document.getElementById('calcDisplay').value = '';
-        }
-    </script>
-    <script src="./src/script.js"></script>
-    <script src="./src/scriptBtn.js"></script>
-</body>
 <footer>
-    <ul>
-        <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
-        <p>© All rights reserved 2024 </p>
-    </ul>
+  <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
+  <p>© All rights reserved 2024</p>
 </footer>
+
+<script>
+  // ✅ FIX Supabase client init
+  const { createClient } = supabase;
+  const sb = createClient(
+    "https://avlrhwghetnmgvsbjlxt.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw"
+  );
+
+  // ✅ Local state
+  let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+  let incomes = JSON.parse(localStorage.getItem("incomes") || "[]");
+  let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+  let currentUser = null;
+
+  // ✅ DOM references
+  const authSection = document.getElementById("authSection");
+  const dashboardSection = document.getElementById("dashboardSection");
+  const statusEl = document.getElementById('status');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const expenseList = document.getElementById('expenseList');
+  const incomeList = document.getElementById('incomeList');
+  const notesList = document.getElementById('notesList');
+
+  // ✅ Local save helper
+  function saveLocal() {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    localStorage.setItem("incomes", JSON.stringify(incomes));
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }
+
+  // ✅ UI Renderer
+  function renderUI() {
+    // Expenses
+    expenseList.innerHTML = '';
+    expenses.forEach(e => {
+      const li = document.createElement('li');
+      li.textContent = `${e.name}: $${e.amount}`;
+      expenseList.appendChild(li);
+    });
+
+    // Incomes
+    incomeList.innerHTML = '';
+    incomes.forEach(i => {
+      const li = document.createElement('li');
+      li.textContent = `${i.name}: $${i.amount}`;
+      incomeList.appendChild(li);
+    });
+
+    // Notes
+    notesList.innerHTML = '';
+    notes.forEach(n => {
+      const li = document.createElement('li');
+      li.textContent = n.text;
+      notesList.appendChild(li);
+    });
+  }
+
+  // ✅ Sync data to Supabase
+  async function syncToSupabase() {
+    if (!currentUser) return;
+
+    await sb.from("user_data").upsert({
+      user_id: currentUser.id,
+      expenses, incomes, notes,
+      updated_at: new Date()
+    }, { onConflict: "user_id" });
+
+    console.log("✅ Synced merged data to Supabase");
+  }
+
+  // ✅ Fetch + merge cloud/local data
+  async function fetchAndMergeSupabase() {
+    if (!currentUser) return;
+
+    const { data, error } = await sb
+      .from("user_data")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+    if (data) {
+      console.log("✅ Cloud data found, merging...");
+      const mergeUnique = (localArr, cloudArr, keyFn) => {
+        const combined = [...localArr, ...cloudArr];
+        const seen = new Set();
+        return combined.filter(item => {
+          const key = keyFn(item);
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      };
+
+      expenses = mergeUnique(expenses, data.expenses || [], e => `${e.name}-${e.amount}`);
+      incomes = mergeUnique(incomes, data.incomes || [], i => `${i.name}-${i.amount}`);
+      notes = mergeUnique(notes, data.notes || [], n => n.text);
+
+      saveLocal();
+      renderUI();
+      await syncToSupabase();
+    } else {
+      console.log("✅ No cloud data yet → pushing local to cloud");
+      await syncToSupabase();
+    }
+  }
+
+  // ✅ Add Expense
+  document.getElementById('addExpenseBtn').addEventListener('click', () => {
+    const nameEl = document.getElementById('expenseName');
+    const amountEl = document.getElementById('expenseAmount');
+    const name = nameEl.value.trim();
+    const amount = parseFloat(amountEl.value);
+
+    if (!name || isNaN(amount)) return;
+
+    expenses.push({ name, amount, date: new Date().toISOString() });
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+
+    nameEl.value = "";
+    amountEl.value = "";
+  });
+
+  // ✅ Add Income
+  document.getElementById('addIncomeBtn').addEventListener('click', () => {
+    const nameEl = document.getElementById('incomeName');
+    const amountEl = document.getElementById('incomeAmount');
+    const name = nameEl.value.trim();
+    const amount = parseFloat(amountEl.value);
+
+    if (!name || isNaN(amount)) return;
+
+    incomes.push({ name, amount, date: new Date().toISOString() });
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+
+    nameEl.value = "";
+    amountEl.value = "";
+  });
+
+  // ✅ Add Note
+  document.getElementById('addNoteBtn').addEventListener('click', () => {
+    const textEl = document.getElementById('noteText');
+    const text = textEl.value.trim();
+
+    if (!text) return;
+
+    notes.push({ text, date: new Date().toISOString() });
+    saveLocal();
+    renderUI();
+    syncToSupabase();
+
+    textEl.value = "";
+  });
+
+  // ✅ Logout
+  logoutBtn.addEventListener('click', async () => {
+    await sb.auth.signOut();
+    alert("Logged out!");
+    authSection.classList.remove("hidden");
+    dashboardSection.classList.add("hidden");
+  });
+
+  // ✅ Login
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      alert("Login failed: " + error.message);
+    } else {
+      alert("✅ Logged in!");
+      checkSession();
+    }
+  });
+
+  // ✅ Signup
+  document.getElementById('signupBtn').addEventListener('click', async () => {
+    const email = document.getElementById('authEmail').value;
+    const password = document.getElementById('authPassword').value;
+    const { error } = await sb.auth.signUp({ email, password });
+
+    if (error) {
+      alert("Signup failed: " + error.message);
+    } else {
+      alert("✅ Signup successful! Please confirm your email.");
+    }
+  });
+
+  // ✅ Session check + UI toggle
+  async function checkSession() {
+    const { data: { session } } = await sb.auth.getSession();
+
+    if (session?.user) {
+      currentUser = session.user;
+      statusEl.textContent = `Logged in as ${currentUser.email}`;
+      authSection.classList.add("hidden");
+      dashboardSection.classList.remove("hidden");
+
+      renderUI();
+      fetchAndMergeSupabase();
+    } else {
+      currentUser = null;
+      authSection.classList.remove("hidden");
+      dashboardSection.classList.add("hidden");
+    }
+  }
+
+  // ✅ Initial check
+  checkSession();
+</script>
+</body>
 </html>

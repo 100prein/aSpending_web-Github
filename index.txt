@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="aSpending" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/styles.css">
+    <script src="https://kit.fontawesome.com/fcd93b617c.js" crossorigin="anonymous"></script>
+    <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabaseUrl = 'https://avlrhwghetnmgvsbjlxt.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const authStatus = document.getElementById('authStatus');
+
+  async function login() {
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    if (error) {
+      authStatus.textContent = 'Login failed: ' + error.message;
+    } else {
+      authStatus.textContent = 'Logged in!';
+      logoutBtn.style.display = 'block';
+    }
+  }
+
+  async function signup() {
+    const { error, data } = await supabase.auth.signUp({
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    if (error) {
+      authStatus.textContent = 'Signup failed: ' + error.message;
+    } else {
+      authStatus.textContent = 'Signup successful! Check your email.';
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    authStatus.textContent = 'Logged out.';
+    logoutBtn.style.display = 'none';
+  }
+
+  loginBtn.addEventListener('click', login);
+  signupBtn.addEventListener('click', signup);
+  logoutBtn.addEventListener('click', logout);
+</script>
+
+
+    <title>aSpending | Home</title>
+    <style>
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .calculator input, .calculator button {
+            padding: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .calculator input {
+            grid-column: span 4;
+            text-align: center;
+        }
+        
+        #calcul {
+            background:  rgba(7, 0, 0, 0.7);
+            margin: 5%;
+            padding: 5%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="nav_sect">
+        <ul id="#menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#calcul">Calculator</a></li>
+            <li><a href="#note">Note</a></li>
+            <!--<li><a href="profile.html">Profile</a></li>-->
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Signup</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+
+
+        </ul>
+    </div>
+    <div id="authSection">
+        <h3>Login to sync</h3>
+        <input type="email" class="inputText" id="email" placeholder="Enter your email" />
+        <input type="password" class="inputText" id="password" placeholder="Enter your password" />
+        <button id="loginBtn">Login</button>
+        <button id="signupBtn">Signup</button>
+        <button id="logoutBtn" style="display:none;">Logout</button>
+        <p id="authStatus"></p>
+    </div>
+
+    <div class="budgetSection">
+        <h1>Your Expenses</h1>
+        <div class="expenses_section">
+            
+            <div class="output">
+                <form id="expenseForm">
+                    <label for="expenseAmount">Amount</label><br>
+                    <input type="number" id="expenseAmount" class="xpenses" name="expenseAmount"><br>
+                    <label for="expenseName">Name</label><br>
+                    <input type="text" id="expenseName" class="xpenses" name="expenseName"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+                
+                    <div class="expensesListContainer">
+                        <ul id="expenseList"></ul>
+                    </div>
+                    <h3>Expenses: $<span id="totalExpenses">0</span></h3>
+            </div>
+    
+            <div class="output">
+                <form id="expenseForm2">
+                    <label for="expenseAmount2">Amount</label><br>
+                    <input type="number" id="expenseAmount2" class="xpenses" name="expenseAmount"><br>
+                    <label for="expenseName2">Name</label><br>
+                    <input type="text" id="expenseName2" class="xpenses" name="expenseName2"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+            </div>
+
+            <div class="output">
+                <form id="expenseForm3">
+                    <label for="expenseAmount3">Amount</label><br>
+                    <input type="number" id="expenseAmount3" class="xpenses" name="expenseAmount"><br>
+                    <label for="expenseName3">Name</label><br>
+                    <input type="text" id="expenseName3" class="xpenses" name="expenseName3"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+            </div>
+        </div>
+        <h1>Your Income</h1>
+        <div class="income_section">   
+            <div class="output">
+                <form id="incomeForm">
+                    <label for="incomeAmount">Amount</label><br>
+                    <input type="number" id="incomeAmount" class="xpenses" name="incomeAmount"><br>
+                    <label for="incomeName">Name</label><br>
+                    <input type="text" id="incomeName" class="xpenses" name="incomeName"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+                <div class="expensesListContainer">
+                    <ul id="incomeList"></ul>
+                </div>
+                <h3>Income: $<span id="totalIncomes">0</span></h3>
+            </div>
+            <div class="output">
+                <form id="incomeForm2">
+                    <label for="incomeAmount2">Amount</label><br>
+                    <input type="number" id="incomeAmount2" class="xpenses" name="incomeAmount"><br>
+                    <label for="incomeName2">Name</label><br>
+                    <input type="text" id="incomeName2" class="xpenses" name="incomeName2"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+                <ul id="incomeList"></ul>
+            </div>
+            
+            <div class="output">
+                <form id="incomeForm3">
+                    <label for="incomeAmount3">Amount</label><br>
+                    <input type="number" id="incomeAmount3" class="xpenses" name="incomeAmount"><br>
+                    <label for="incomeName3">Name</label><br>
+                    <input type="text" id="incomeName3" class="xpenses" name="incomeName3"><br>
+                    <input type="submit" class="addButton" value="Add">
+                </form>
+                <ul id="incomeList"></ul>
+            </div>
+            
+            
+        </div>
+        
+        <div class="output">
+            <h1>Your Weekly Total</h1>
+            <h3>Total: $<span id="weeklyTotal">0</span></h3>
+        </div>
+    </div>
+
+    <!--Calculator-->
+
+    <div id="calcul" class="output">
+        <div class="calculator">
+            <input type="text" id="calcDisplay" disabled>
+            <button onclick="calcInput('7')">7</button>
+            <button onclick="calcInput('8')">8</button>
+            <button onclick="calcInput('9')">9</button>
+            <button onclick="calcInput('/')">/</button>
+            <button onclick="calcInput('4')">4</button>
+            <button onclick="calcInput('5')">5</button>
+            <button onclick="calcInput('6')">6</button>
+            <button onclick="calcInput('*')">*</button>
+            <button onclick="calcInput('1')">1</button>
+            <button onclick="calcInput('2')">2</button>
+            <button onclick="calcInput('3')">3</button>
+            <button onclick="calcInput('-')">-</button>
+            <button onclick="calcInput('0')">0</button>
+            <button onclick="calcInput('.')">.</button>
+            <button onclick="calcInput('+')">+</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="clearCalc()" style="grid-column: span 4;">C</button>
+        </div>
+    </div>
+    <!--Same functions as a note pad-->
+    <div class="summarySection" id="note">
+        <h1>Note</h1>
+        <button class="btn_add"> <i class="fas fa-pencil"></i>Add Note</button>
+        <div id="myNotes"></div>
+        <div class="note-wrapper">
+            <div class="operations">
+                <button class="edit"><i class="fas fa-edit"></i></button>
+                <button class="delete"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <div class=" main hidden"></div>
+            <textarea name="" id=""></textarea>
+        </div>
+    </div>
+    <script>
+        function calcInput(value) {
+            document.getElementById('calcDisplay').value += value;
+        }
+
+        function calculate() {
+            const display = document.getElementById('calcDisplay');
+            try {
+                display.value = eval(display.value);
+            } catch {
+                display.value = 'Error';
+            }
+        }
+
+        function clearCalc() {
+            document.getElementById('calcDisplay').value = '';
+        }
+    </script>
+    <script src="./src/script.js"></script>
+    <script src="./src/scriptBtn.js"></script>
+</body>
+<footer>
+    <ul>
+        <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
+        <p>© All rights reserved 2024 </p>
+    </ul>
+</footer>
+</html>
