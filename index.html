@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="aSpending" />
+<link rel="manifest" href="/site.webmanifest" />
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/styles.css">
     <link rel="icon" type="image/x-icon" href="./src/img/aSpendingLogoTrans.png">
     <script src="https://kit.fontawesome.com/fcd93b617c.js" crossorigin="anonymous"></script>
+    <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://avlrhwghetnmgvsbjlxt.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    window.supabase = supabase; // Expose it globally if needed
+    </script>
+
     <title>aSpending | Home</title>
     <style>
         .calculator {
@@ -40,6 +57,15 @@
             <li><a href="#calcul">Calculator</a></li>
             <li><a href="#note">Note</a></li>
             <!--<li><a href="profile.html">Profile</a></li>-->
+            <div id="authSection">
+  <h3>Login to sync</h3>
+  <input type="email" class="inputText" id="email" placeholder="Enter your email" />
+  <button id="loginBtn">Login</button>
+  <button id="signupBtn">Signup</button>
+  <button id="logoutBtn" style="display:none;">Logout</button>
+  <p id="authStatus"></p>
+</div>
+
         </ul>
     </div>
 
