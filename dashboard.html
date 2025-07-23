@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: Arial; }
+    #logout { display: none; }
+  </style>
+</head>
+<body>
+  <div class="nav_sect">
+        <ul id="#menu">
+            <li><a href="index.html">Home</a></li>
+            <!--<li><a href="profile.html">Profile</a></li>-->
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Signup</a></li>
+
+
+        </ul>
+    </div>
+  <h1>Dashboard</h1>
+  <p id="status">Checking session...</p>
+  <button id="logout">Logout</button>
+
+  <h2>Expenses</h2>
+  <ul id="expenseList"></ul>
+  <input id="expenseName" placeholder="Name">
+  <input id="expenseAmount" placeholder="Amount" type="number">
+  <button id="addExpenseBtn">Add Expense</button>
+
+  <h2>Incomes</h2>
+  <ul id="incomeList"></ul>
+  <input id="incomeName" placeholder="Name">
+  <input id="incomeAmount" placeholder="Amount" type="number">
+  <button id="addIncomeBtn">Add Income</button>
+
+  <h2>Notes</h2>
+  <ul id="notesList"></ul>
+  <textarea id="noteText" placeholder="Write a note"></textarea>
+  <button id="addNoteBtn">Add Note</button>
+
+  <script>
+    const supabase = supabase.createClient(
+      "https://YOUR_PROJECT.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw"
+    );
+
+    let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+    let incomes = JSON.parse(localStorage.getItem("incomes") || "[]");
+    let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+
+    let currentUser = null;
+
+    const statusEl = document.getElementById('status');
+    const logoutBtn = document.getElementById('logout');
+    const expenseList = document.getElementById('expenseList');
+    const incomeList = document.getElementById('incomeList');
+    const notesList = document.getElementById('notesList');
+
+    function saveLocal() {
+      localStorage.setItem("expenses", JSON.stringify(expenses));
+      localStorage.setItem("incomes", JSON.stringify(incomes));
+      localStorage.setItem("notes", JSON.stringify(notes));
+    }
+
+    function renderUI() {
+      // Expenses
+      expenseList.innerHTML = '';
+      expenses.forEach(e => {
+        const li = document.createElement('li');
+        li.textContent = `${e.name}: $${e.amount}`;
+        expenseList.appendChild(li);
+      });
+
+      // Incomes
+      incomeList.innerHTML = '';
+      incomes.forEach(i => {
+        const li = document.createElement('li');
+        li.textContent = `${i.name}: $${i.amount}`;
+        incomeList.appendChild(li);
+      });
+
+      // Notes
+      notesList.innerHTML = '';
+      notes.forEach(n => {
+        const li = document.createElement('li');
+        li.textContent = n.text;
+        notesList.appendChild(li);
+      });
+    }
+
+    async function syncToSupabase() {
+      if (!currentUser) return;
+
+      await supabase.from("user_data").upsert({
+        user_id: currentUser.id,
+        expenses, incomes, notes,
+        updated_at: new Date()
+      }, { onConflict: "user_id" });
+
+      console.log("✅ Synced merged data to Supabase");
+    }
+
+    async function fetchAndMergeSupabase() {
+      if (!currentUser) return;
+
+      const { data, error } = await supabase
+        .from("user_data")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .single();
+
+      if (data) {
+        console.log("✅ Cloud data found, merging...");
+        // Merge strategy → combine arrays (avoid duplicates by name+amount+date)
+        const mergeUnique = (localArr, cloudArr, keyFn) => {
+          const combined = [...localArr, ...cloudArr];
+          const seen = new Set();
+          return combined.filter(item => {
+            const key = keyFn(item);
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        };
+
+        expenses = mergeUnique(expenses, data.expenses || [], e => `${e.name}-${e.amount}`);
+        incomes = mergeUnique(incomes, data.incomes || [], i => `${i.name}-${i.amount}`);
+        notes = mergeUnique(notes, data.notes || [], n => n.text);
+
+        saveLocal();
+        renderUI();
+        await syncToSupabase(); // push merged result back
+      } else {
+        console.log("✅ No cloud data yet → pushing local to cloud");
+        await syncToSupabase(); // first-time sync
+      }
+    }
+
+    // Add Expense
+    document.getElementById('addExpenseBtn').addEventListener('click', () => {
+      const name = document.getElementById('expenseName').value;
+      const amount = parseFloat(document.getElementById('expenseAmount').value);
+      if (!name || !amount) return;
+      expenses.push({ name, amount, date: new Date().toISOString() });
+      saveLocal();
+      renderUI();
+      syncToSupabase();
+    });
+
+    // Add Income
+    document.getElementById('addIncomeBtn').addEventListener('click', () => {
+      const name = document.getElementById('incomeName').value;
+      const amount = parseFloat(document.getElementById('incomeAmount').value);
+      if (!name || !amount) return;
+      incomes.push({ name, amount, date: new Date().toISOString() });
+      saveLocal();
+      renderUI();
+      syncToSupabase();
+    });
+
+    // Add Note
+    document.getElementById('addNoteBtn').addEventListener('click', () => {
+      const text = document.getElementById('noteText').value;
+      if (!text) return;
+      notes.push({ text, date: new Date().toISOString() });
+      saveLocal();
+      renderUI();
+      syncToSupabase();
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      alert("Logged out!");
+      window.location.href = "login.html";
+    });
+
+    // Session check
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      currentUser = session.user;
+      statusEl.textContent = `Logged in as ${currentUser.email}`;
+      logoutBtn.style.display = "inline";
+
+      renderUI(); // Show local immediately
+      await fetchAndMergeSupabase(); // Merge cloud & local
+    })();
+  </script>
+</body>
+<footer>
+    <ul>
+        <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
+        <p>© All rights reserved 2024 </p>
+    </ul>
+</footer>
+</html>

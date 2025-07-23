@@ -1,4 +1,6 @@
-
+* {
+    color: black;
+}
 body {
     background: url("./img/aSpendingBkg.png") no-repeat fixed;
     background-size: cover;
@@ -202,6 +204,6 @@ a {
 }
 
 .inputText {
-    color: black,
+    color: black;
 }
 

@@ -162,3 +162,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ✅ Load initial local data
   updateUI();
 });
+async function loadNotesFromCloud() {
+  const user = (await supabase.auth.getUser()).data.user;
+  if (!user) return;
+
+  const { data, error } = await supabase.from('notes')
+    .select('*')
+    .eq('user_id', user.id);
+
+  if (!error && data) {
+    // Replace localStorage notes with cloud notes
+    localStorage.setItem('notes', JSON.stringify(data));
+    renderNotes(); // refresh UI
+  }
+}
+
+async function saveNotesToCloud() {
+  const user = (await supabase.auth.getUser()).data.user;
+  if (!user) return;
+
+  const localNotes = JSON.parse(localStorage.getItem('notes') || '[]');
+
+  // Delete old notes and insert fresh ones
+  await supabase.from('notes').delete().eq('user_id', user.id);
+  await supabase.from('notes').insert(localNotes.map(note => ({
+    ...note,
+    user_id: user.id,
+  })));
+}

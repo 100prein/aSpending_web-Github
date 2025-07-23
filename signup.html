@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" href="./src/styles.css">
+  <title>Signup</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabaseUrl = 'https://avlrhwghetnmgvsbjlxt.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const authStatus = document.getElementById('authStatus');
+
+  // Handle login
+  loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      authStatus.textContent = `❌ Login failed: ${error.message}`;
+    } else {
+      authStatus.textContent = `✅ Logged in as ${email}`;
+      logoutBtn.style.display = 'inline-block';
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+    }
+  });
+
+  // Handle signup
+  signupBtn.addEventListener('click', async () => {
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      authStatus.textContent = `❌ Signup failed: ${error.message}`;
+    } else {
+      authStatus.textContent = `✅ Signup success! Check your email for confirmation.`;
+    }
+  });
+
+  // Handle logout
+  logoutBtn.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    authStatus.textContent = '✅ Logged out.';
+    logoutBtn.style.display = 'none';
+    loginBtn.style.display = 'inline-block';
+    signupBtn.style.display = 'inline-block';
+  });
+
+  // Auto-detect user session
+  const sessionCheck = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      authStatus.textContent = `✅ Logged in as ${data.session.user.email}`;
+      logoutBtn.style.display = 'inline-block';
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+    }
+  };
+
+  sessionCheck();
+
+  // Listen for login/logout changes
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      authStatus.textContent = `✅ Logged in as ${session.user.email}`;
+      logoutBtn.style.display = 'inline-block';
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+    } else {
+      authStatus.textContent = '🔒 Not logged in';
+      logoutBtn.style.display = 'none';
+      loginBtn.style.display = 'inline-block';
+      signupBtn.style.display = 'inline-block';
+    }
+  });
+
+  window.supabase = supabase; // Expose for other scripts
+</script>
+
+</head>
+<body>
+  <div class="nav_sect">
+        <ul id="#menu">
+            <li><a href="index.html">Home</a></li>
+            <!--<li><a href="profile.html">Profile</a></li>-->
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Signup</a></li>
+
+
+        </ul>
+    </div>
+  <h2>Create Account</h2>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="signupUser()">Sign Up</button>
+  <p>Already have an account? <a href="login.html">Login</a></p>
+</body>
+<footer>
+    <ul>
+        <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
+        <p>© All rights reserved 2024 </p>
+    </ul>
+</footer>
+</html>
