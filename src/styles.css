@@ -30,13 +30,6 @@ body {
 }
 
 
-footer {
-    background:  rgba(7, 0, 0, 0.7);
-    margin: 5%;
-    padding: 5%;
-    color: white;
-}
-
 .nav_sect {
     background-color: #A5A5A5;
     padding: 10px;
@@ -77,8 +70,9 @@ footer {
     height: auto;
 }
 
-h2, h3 {
+h2, h3, p {
     color: white;
+    font-weight: 800;
 }
 
 form {
@@ -163,6 +157,13 @@ li {
     border-radius: 10px;
     width: 70%;
     color: white; 
+    align-items: center;
+    display: flex; justify-content: space-between; 
+}
+
+a {
+    color: white;
+    background-color: none;
 }
 
 .expensesListContainer {
@@ -221,4 +222,68 @@ a {
     margin: 5px 0; 
     padding: 8px;
 }
+ #logout { display: none; }
 
+.delete-btn { margin-left: 10px; color: red; cursor: pointer; }
+.clear-all { margin-top: 10px; background: red; color: white; padding: 6px; border: none; cursor: pointer; }
+footer { text-align: center; margin-top: 20px; }
+ul { list-style: none; padding: 0; }
+ .hidden { display: none; }
+
+.section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .clear-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .date-label {
+      font-size: 0.8em;
+      color: gray;
+      margin-left: 8px;
+    }
+    .calculator {
+  max-width: 250px;
+  margin: 20px auto;
+}
+
+#calcDisplay {
+  width: 100%;
+  height: 40px;
+  font-size: 18px;
+  text-align: right;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.calc-grid button {
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.calc-grid button:hover {
+  background: #ddd;
+}
+
+.clear-btn {
+  grid-column: span 4;
+  background: #ff6666;
+  color: white;
+}

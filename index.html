@@ -4,12 +4,6 @@
   <title>Budget Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="./src/styles.css">
-  <style>
-    .hidden { display: none; }
-    ul { list-style: none; padding: 0; }
-    
-    footer { text-align: center; margin-top: 20px; }
-  </style>
 </head>
 <body>
 
@@ -32,72 +26,98 @@
       <button class="submit" id="logoutBtn">Logout</button>
     </div>
 
-    <h2>Expenses</h2>
+    <div class="section-header">
+      <h2>Expenses</h2>
+      <button id="clearExpensesBtn" class="clear-btn">Clear All</button>
+    </div>
     <ul id="expenseList"></ul>
     <input id="expenseName" class="inputText" placeholder="Expense Name">
     <input id="expenseAmount" class="inputText" placeholder="Amount" type="number">
     <button class="submit" id="addExpenseBtn">Add Expense</button>
 
-    <h2>Incomes</h2>
+    <div class="section-header">
+      <h2>Incomes</h2>
+      <button id="clearIncomesBtn" class="clear-btn">Clear All</button>
+    </div>
     <ul id="incomeList"></ul>
     <input id="incomeName" class="inputText" placeholder="Income Name">
     <input id="incomeAmount" class="inputText" placeholder="Amount" type="number">
     <button class="submit" id="addIncomeBtn">Add Income</button>
 
-    <h2>Notes</h2>
+    <h2>Summary</h2>
+<div id="summaryBox">
+  <p>Total Incomes: $<span id="totalIncomes">0</span></p>
+  <p>Total Expenses: $<span id="totalExpenses">0</span></p>
+  <p>Net Balance: $<span id="netBalance">0</span></p>
+</div>
+
+
+    <div class="section-header">
+      <h2>Notes</h2>
+      <button id="clearNotesBtn" class="clear-btn">Clear All</button>
+    </div>
     <ul id="notesList"></ul>
     <textarea id="noteText" class="inputText" placeholder="Write a note"></textarea>
     <button class="submit" id="addNoteBtn">Add Note</button>
   </div>
  <!--Calculator-->
 
-    <div id="calcul" class="output">
-        <div class="calculator">
-            <input type="text" id="calcDisplay" disabled>
-            <button onclick="calcInput('7')">7</button>
-            <button onclick="calcInput('8')">8</button>
-            <button onclick="calcInput('9')">9</button>
-            <button onclick="calcInput('/')">/</button>
-            <button onclick="calcInput('4')">4</button>
-            <button onclick="calcInput('5')">5</button>
-            <button onclick="calcInput('6')">6</button>
-            <button onclick="calcInput('*')">*</button>
-            <button onclick="calcInput('1')">1</button>
-            <button onclick="calcInput('2')">2</button>
-            <button onclick="calcInput('3')">3</button>
-            <button onclick="calcInput('-')">-</button>
-            <button onclick="calcInput('0')">0</button>
-            <button onclick="calcInput('.')">.</button>
-            <button onclick="calcInput('+')">+</button>
-            <button onclick="calculate()">=</button>
-            <button onclick="clearCalc()" style="grid-column: span 4;">C</button>
-        </div>
-    </div>
+    <div class="calculator">
+  <input type="text" id="calcDisplay" disabled>
+
+  <div class="calc-grid">
+    <button onclick="calcInput('7')">7</button>
+    <button onclick="calcInput('8')">8</button>
+    <button onclick="calcInput('9')">9</button>
+    <button onclick="calcInput('/')">/</button>
+
+    <button onclick="calcInput('4')">4</button>
+    <button onclick="calcInput('5')">5</button>
+    <button onclick="calcInput('6')">6</button>
+    <button onclick="calcInput('*')">*</button>
+
+    <button onclick="calcInput('1')">1</button>
+    <button onclick="calcInput('2')">2</button>
+    <button onclick="calcInput('3')">3</button>
+    <button onclick="calcInput('-')">-</button>
+
+    <button onclick="calcInput('0')">0</button>
+    <button onclick="calcInput('.')">.</button>
+    <button onclick="calculate()">=</button>
+    <button onclick="calcInput('+')">+</button>
+
+    <button class="clear-btn" onclick="clearCalc()">C</button>
+  </div>
 </div>
 
-   </div>
+
+
+   
   
 
 <footer>
-  <p>Made by <a href="https://github.com/100prein">Sekou Traore</a></p>
-  <p>© All rights reserved 2024</p>
+  <p>Made by <a href="https://www.instagram.com/captcold_man/">Sekou Traore</a></p>
+  <p>© All rights reserved 2025</p>
+  <h3>Ready to back my projects?</h3>
+  <p><a href="https://www.kickstarter.com/projects/acareer/acareer-development-support">KickStarter</a></p>
+
+  <p><a href="https://gofund.me/46276941">GoFundMe</a></p>
 </footer>
+</div>
+</div>
 
 <script>
-  // ✅ FIX Supabase client init
   const { createClient } = supabase;
   const sb = createClient(
     "https://avlrhwghetnmgvsbjlxt.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2bHJod2doZXRubWd2c2JqbHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2OTY3MTMsImV4cCI6MjA2ODI3MjcxM30.LPDgAj8PEvF4gUYa55xRgcUdJrcB3FNTHvMpRy_RGqw"
   );
 
-  // ✅ Local state
   let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
   let incomes = JSON.parse(localStorage.getItem("incomes") || "[]");
   let notes = JSON.parse(localStorage.getItem("notes") || "[]");
   let currentUser = null;
 
-  // ✅ DOM references
   const authSection = document.getElementById("authSection");
   const dashboardSection = document.getElementById("dashboardSection");
   const statusEl = document.getElementById('status');
@@ -106,65 +126,70 @@
   const incomeList = document.getElementById('incomeList');
   const notesList = document.getElementById('notesList');
 
-  // ✅ Local save helper
   function saveLocal() {
     localStorage.setItem("expenses", JSON.stringify(expenses));
     localStorage.setItem("incomes", JSON.stringify(incomes));
     localStorage.setItem("notes", JSON.stringify(notes));
   }
 
-  // ✅ UI Renderer
-  function renderUI() {
-    // Expenses
-    expenseList.innerHTML = '';
-    expenses.forEach(e => {
-      const li = document.createElement('li');
-      li.textContent = `${e.name}: $${e.amount}`;
-      expenseList.appendChild(li);
-    });
-
-    // Incomes
-    incomeList.innerHTML = '';
-    incomes.forEach(i => {
-      const li = document.createElement('li');
-      li.textContent = `${i.name}: $${i.amount}`;
-      incomeList.appendChild(li);
-    });
-
-    // Notes
-    notesList.innerHTML = '';
-    notes.forEach(n => {
-      const li = document.createElement('li');
-      li.textContent = n.text;
-      notesList.appendChild(li);
-    });
+  function formatDate(dateString) {
+    const d = new Date(dateString);
+    return d.toLocaleString(); // readable date & time
   }
 
-  // ✅ Sync data to Supabase
+  function renderUI() {
+  // Expenses
+  expenseList.innerHTML = '';
+  expenses.forEach(e => {
+    const li = document.createElement('li');
+    li.textContent = `${e.name}: $${e.amount.toFixed(2)} (${new Date(e.date).toLocaleString()})`;
+    expenseList.appendChild(li);
+  });
+
+  // Incomes
+  incomeList.innerHTML = '';
+  incomes.forEach(i => {
+    const li = document.createElement('li');
+    li.textContent = `${i.name}: $${i.amount.toFixed(2)} (${new Date(i.date).toLocaleString()})`;
+    incomeList.appendChild(li);
+  });
+
+  // Notes
+  notesList.innerHTML = '';
+  notes.forEach(n => {
+    const li = document.createElement('li');
+    li.textContent = `${n.text} (${new Date(n.date).toLocaleString()})`;
+    notesList.appendChild(li);
+  });
+
+  // ✅ CALCULATE TOTALS
+  const totalExpenses = expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+  const totalIncomes = incomes.reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0);
+  const netBalance = totalIncomes - totalExpenses;
+
+  // ✅ UPDATE SUMMARY UI
+  document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+  document.getElementById('totalIncomes').textContent = totalIncomes.toFixed(2);
+  document.getElementById('netBalance').textContent = netBalance.toFixed(2);
+
+  // ✅ Optional: Highlight negative balance in red
+  const netEl = document.getElementById('netBalance');
+  netEl.style.color = netBalance < 0 ? 'red' : 'green';
+}
   async function syncToSupabase() {
     if (!currentUser) return;
-
     await sb.from("user_data").upsert({
       user_id: currentUser.id,
       expenses, incomes, notes,
       updated_at: new Date()
     }, { onConflict: "user_id" });
-
-    console.log("✅ Synced merged data to Supabase");
   }
 
-  // ✅ Fetch + merge cloud/local data
   async function fetchAndMergeSupabase() {
     if (!currentUser) return;
-
-    const { data, error } = await sb
-      .from("user_data")
-      .select("*")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
+    const { data } = await sb.from("user_data").select("*").eq("user_id", currentUser.id).maybeSingle();
 
     if (data) {
-      console.log("✅ Cloud data found, merging...");
       const mergeUnique = (localArr, cloudArr, keyFn) => {
         const combined = [...localArr, ...cloudArr];
         const seen = new Set();
@@ -175,19 +200,50 @@
           return true;
         });
       };
-
-      expenses = mergeUnique(expenses, data.expenses || [], e => `${e.name}-${e.amount}`);
-      incomes = mergeUnique(incomes, data.incomes || [], i => `${i.name}-${i.amount}`);
-      notes = mergeUnique(notes, data.notes || [], n => n.text);
-
+      expenses = mergeUnique(expenses, data.expenses || [], e => `${e.name}-${e.amount}-${e.date}`);
+      incomes = mergeUnique(incomes, data.incomes || [], i => `${i.name}-${i.amount}-${i.date}`);
+      notes = mergeUnique(notes, data.notes || [], n => `${n.text}-${n.date}`);
       saveLocal();
       renderUI();
       await syncToSupabase();
     } else {
-      console.log("✅ No cloud data yet → pushing local to cloud");
       await syncToSupabase();
     }
   }
+
+  // ✅ Delete individual items
+  window.deleteExpense = (index) => {
+    expenses.splice(index, 1);
+    saveLocal(); renderUI(); syncToSupabase();
+  };
+  window.deleteIncome = (index) => {
+    incomes.splice(index, 1);
+    saveLocal(); renderUI(); syncToSupabase();
+  };
+  window.deleteNote = (index) => {
+    notes.splice(index, 1);
+    saveLocal(); renderUI(); syncToSupabase();
+  };
+
+  // ✅ Clear All
+  document.getElementById('clearExpensesBtn').addEventListener('click', () => {
+    if (confirm("Clear all expenses?")) {
+      expenses = [];
+      saveLocal(); renderUI(); syncToSupabase();
+    }
+  });
+  document.getElementById('clearIncomesBtn').addEventListener('click', () => {
+    if (confirm("Clear all incomes?")) {
+      incomes = [];
+      saveLocal(); renderUI(); syncToSupabase();
+    }
+  });
+  document.getElementById('clearNotesBtn').addEventListener('click', () => {
+    if (confirm("Clear all notes?")) {
+      notes = [];
+      saveLocal(); renderUI(); syncToSupabase();
+    }
+  });
 
   // ✅ Add Expense
   document.getElementById('addExpenseBtn').addEventListener('click', () => {
@@ -195,16 +251,11 @@
     const amountEl = document.getElementById('expenseAmount');
     const name = nameEl.value.trim();
     const amount = parseFloat(amountEl.value);
-
     if (!name || isNaN(amount)) return;
 
     expenses.push({ name, amount, date: new Date().toISOString() });
-    saveLocal();
-    renderUI();
-    syncToSupabase();
-
-    nameEl.value = "";
-    amountEl.value = "";
+    saveLocal(); renderUI(); syncToSupabase();
+    nameEl.value = ""; amountEl.value = "";
   });
 
   // ✅ Add Income
@@ -213,34 +264,24 @@
     const amountEl = document.getElementById('incomeAmount');
     const name = nameEl.value.trim();
     const amount = parseFloat(amountEl.value);
-
     if (!name || isNaN(amount)) return;
 
     incomes.push({ name, amount, date: new Date().toISOString() });
-    saveLocal();
-    renderUI();
-    syncToSupabase();
-
-    nameEl.value = "";
-    amountEl.value = "";
+    saveLocal(); renderUI(); syncToSupabase();
+    nameEl.value = ""; amountEl.value = "";
   });
 
   // ✅ Add Note
   document.getElementById('addNoteBtn').addEventListener('click', () => {
     const textEl = document.getElementById('noteText');
     const text = textEl.value.trim();
-
     if (!text) return;
 
     notes.push({ text, date: new Date().toISOString() });
-    saveLocal();
-    renderUI();
-    syncToSupabase();
-
+    saveLocal(); renderUI(); syncToSupabase();
     textEl.value = "";
   });
 
-  // ✅ Logout
   logoutBtn.addEventListener('click', async () => {
     await sb.auth.signOut();
     alert("Logged out!");
@@ -248,43 +289,29 @@
     dashboardSection.classList.add("hidden");
   });
 
-  // ✅ Login
   document.getElementById('loginBtn').addEventListener('click', async () => {
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
     const { error } = await sb.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      alert("Login failed: " + error.message);
-    } else {
-      alert("✅ Logged in!");
-      checkSession();
-    }
+    if (error) alert("Login failed: " + error.message);
+    else { alert("✅ Logged in!"); checkSession(); }
   });
 
-  // ✅ Signup
   document.getElementById('signupBtn').addEventListener('click', async () => {
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
     const { error } = await sb.auth.signUp({ email, password });
-
-    if (error) {
-      alert("Signup failed: " + error.message);
-    } else {
-      alert("✅ Signup successful! Please confirm your email.");
-    }
+    if (error) alert("Signup failed: " + error.message);
+    else alert("✅ Signup successful! Please confirm your email.");
   });
 
-  // ✅ Session check + UI toggle
   async function checkSession() {
     const { data: { session } } = await sb.auth.getSession();
-
     if (session?.user) {
       currentUser = session.user;
       statusEl.textContent = `Logged in as ${currentUser.email}`;
       authSection.classList.add("hidden");
       dashboardSection.classList.remove("hidden");
-
       renderUI();
       fetchAndMergeSupabase();
     } else {
@@ -294,8 +321,32 @@
     }
   }
 
-  // ✅ Initial check
   checkSession();
+
+  // ✅ Calculator Logic
+let calcExpression = "";
+
+function calcInput(value) {
+  calcExpression += value;
+  document.getElementById("calcDisplay").value = calcExpression;
+}
+
+function clearCalc() {
+  calcExpression = "";
+  document.getElementById("calcDisplay").value = "";
+}
+
+function calculate() {
+  try {
+    const result = eval(calcExpression); // ✅ simple evaluation
+    document.getElementById("calcDisplay").value = result;
+    calcExpression = result.toString(); // ✅ allow chaining
+  } catch (e) {
+    document.getElementById("calcDisplay").value = "Error";
+    calcExpression = "";
+  }
+}
+
 </script>
 </body>
 </html>
